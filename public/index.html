@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Authentication Portal</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <!-- Google Identity Services Library -->
+  <script src="https://accounts.google.com/gsi/client" async defer></script>
+  <link rel="stylesheet" href="Home-styles.css">
+</head>
+<body class="bg-gradient-to-br from-blue-50 to-indigo-100 min-h-screen flex items-center justify-center p-4">
+
+  <div class="max-w-4xl mx-auto text-center">
+    <!-- Header Section -->
+    <div class="mb-12">
+      <div class="w-24 h-24 mx-auto mb-6 bg-gradient-to-r from-blue-500 to-purple-600 rounded-full flex items-center justify-center shadow-lg">
+        <i class="fas fa-store text-white text-4xl"></i>
+      </div>
+      <h1 class="text-4xl md:text-5xl font-bold text-gray-800 mb-4">Welcome to Our Platform</h1>
+      <p class="text-xl text-gray-600 max-w-2xl mx-auto">
+        Choose your role to access the platform and enjoy a seamless experience
+      </p>
+    </div>
+
+    <!-- Main Content -->
+    <div class="grid md:grid-cols-2 gap-8 mb-16">
+      <!-- Customer Card -->
+      <div class="bg-white rounded-2xl shadow-xl p-8 transform hover:scale-105 transition-transform duration-300">
+        <div class="w-16 h-16 mx-auto mb-6 bg-blue-100 rounded-full flex items-center justify-center">
+          <i class="fas fa-user text-blue-600 text-2xl"></i>
+        </div>
+        <h2 class="text-2xl font-semibold text-gray-800 mb-4">Customer</h2>
+        <p class="text-gray-600 mb-6">Access our services and manage your account with easy Google authentication</p>
+        <button onclick="openCustomerModal()" class="w-full bg-blue-500 hover:bg-blue-600 text-white font-semibold py-3 px-6 rounded-lg transition-colors duration-300 flex items-center justify-center space-x-2">
+          <i class="fab fa-google"></i>
+          <span>Continue as Customer</span>
+        </button>
+      </div>
+
+      <!-- Admin/Store Owner Card -->
+      <div class="bg-white rounded-2xl shadow-xl p-8 transform hover:scale-105 transition-transform duration-300">
+        <div class="w-16 h-16 mx-auto mb-6 bg-purple-100 rounded-full flex items-center justify-center">
+          <i class="fas fa-crown text-purple-600 text-2xl"></i>
+        </div>
+        <h2 class="text-2xl font-semibold text-gray-800 mb-4">Admin/Store Owner</h2>
+        <p class="text-gray-600 mb-6">Manage your store, inventory, and business operations with admin access</p>
+        <button onclick="openAdminModal()" class="w-full bg-purple-500 hover:bg-purple-600 text-white font-semibold py-3 px-6 rounded-lg transition-colors duration-300">
+          Access Admin Panel
+        </button>
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <div class="text-gray-500 text-sm">
+      <p>© 2024 Your Company Name. All rights reserved.</p>
+    </div>
+  </div>
+
+  <!-- Customer Modal -->
+  <div id="customerModal" class="modal fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
+    <div class="bg-white rounded-2xl shadow-2xl max-w-md w-full p-8 relative">
+      <button onclick="closeModal('customerModal')" class="absolute top-4 right-4 text-gray-400 hover:text-gray-600">
+        <i class="fas fa-times text-2xl"></i>
+      </button>
+      <div class="text-center mb-6">
+        <div class="w-20 h-20 mx-auto mb-4 bg-blue-100 rounded-full flex items-center justify-center">
+          <i class="fas fa-user text-blue-600 text-3xl"></i>
+        </div>
+        <h2 class="text-2xl font-bold text-gray-800 mb-2">Customer Access</h2>
+        <p class="text-gray-600">Sign in with your Google account to continue</p>
+      </div>
+      <div class="space-y-4">
+        <!-- Google Sign-In Button -->
+        <div id="g_id_onload"
+          data-client_id="238946351047-i110lkfs5p8dhl6gg5k60ghtfanioufj.apps.googleusercontent.com"
+          data-context="signin"
+          data-ux_mode="popup"
+          data-callback="handleGoogleSignIn"
+          data-auto_prompt="false">
+        </div>
+        <div class="g_id_signin"
+          data-type="standard"
+          data-shape="rectangular"
+          data-theme="outline"
+          data-text="signin_with"
+          data-size="large"
+          data-logo_alignment="left"
+          data-width="100%">
+        </div>
+        <div class="text-center text-sm text-gray-500 mt-4">
+          <p>By continuing, you agree to our Terms of Service and Privacy Policy</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Success Modal -->
+  <div id="successModal" class="modal fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
+    <div class="bg-white rounded-2xl shadow-2xl max-w-md w-full p-8 relative text-center">
+      <button onclick="closeModal('successModal')" class="absolute top-4 right-4 text-gray-400 hover:text-gray-600">
+        <i class="fas fa-times text-2xl"></i>
+      </button>
+      <div class="w-20 h-20 mx-auto mb-6 bg-green-100 rounded-full flex items-center justify-center">
+        <i class="fas fa-check text-green-600 text-3xl"></i>
+      </div>
+      <h2 class="text-2xl font-bold text-gray-800 mb-4">Successfully Signed In!</h2>
+      <p class="text-gray-600 mb-6" id="userWelcome">Welcome to our platform!</p>
+      <button onclick="closeModal('successModal')" class="w-full bg-blue-500 hover:bg-blue-600 text-white font-semibold py-3 px-6 rounded-lg transition-colors duration-300">
+        Continue to Dashboard
+      </button>
+    </div>
+  </div>
+
+  <!-- Admin Modal -->
+  <div id="adminModal" class="modal fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
+    <div class="bg-white rounded-2xl shadow-2xl max-w-md w-full p-8 relative">
+      <button onclick="closeModal('adminModal')" class="absolute top-4 right-4 text-gray-400 hover:text-gray-600">
+        <i class="fas fa-times text-2xl"></i>
+      </button>
+      <div class="text-center mb-6">
+        <div class="w-20 h-20 mx-auto mb-4 bg-purple-100 rounded-full flex items-center justify-center">
+          <i class="fas fa-crown text-purple-600 text-3xl"></i>
+        </div>
+        <h2 class="text-2xl font-bold text-gray-800 mb-2">Admin Access</h2>
+        <p class="text-gray-600">Sign in to your admin account</p>
+      </div>
+
+      <!-- Admin Login Form -->
+      <div id="adminLoginForm">
+        <form class="space-y-4">
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-2">Email Address</label>
+            <input type="email" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent" placeholder="Enter your email">
+          </div>
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-2">Password</label>
+            <input type="password" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent" placeholder="Enter your password">
+          </div>
+          <div class="flex items-center justify-between">
+            <label class="flex items-center">
+              <input type="checkbox" class="rounded border-gray-300 text-purple-600 focus:ring-purple-500">
+              <span class="ml-2 text-sm text-gray-600">Remember me</span>
+            </label>
+            <a href="#" class="text-sm text-purple-600 hover:text-purple-700">Forgot password?</a>
+          </div>
+          <button type="button" class="w-full bg-purple-500 hover:bg-purple-600 text-white font-semibold py-3 px-6 rounded-lg transition-colors duration-300">
+            Sign In
+          </button>
+        </form>
+        <div class="mt-6 text-center">
+          <p class="text-sm text-gray-600">
+            Don't have an account? 
+            <button onclick="switchToRegister()" class="text-purple-600 hover:text-purple-700 font-semibold ml-1">Register now</button>
+          </p>
+        </div>
+      </div>
+
+      <!-- Admin Login Form -->
+      <div id="adminLoginForm">
+        <form class="space-y-4" onsubmit="event.preventDefault();">
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-2">Email Address</label>
+            <input id="adminLoginEmail" type="email" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent" placeholder="Enter your email">
+          </div>
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-2">Password</label>
+            <input id="adminLoginPassword" type="password" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent" placeholder="Enter your password">
+          </div>
+          <div class="flex items-center justify-between">
+            <label class="flex items-center">
+              <input type="checkbox" class="rounded border-gray-300 text-purple-600 focus:ring-purple-500">
+              <span class="ml-2 text-sm text-gray-600">Remember me</span>
+            </label>
+            <a href="#" class="text-sm text-purple-600 hover:text-purple-700">Forgot password?</a>
+          </div>
+          <button type="button" onclick="adminLogin(
+            document.getElementById('adminLoginEmail').value,
+            document.getElementById('adminLoginPassword').value
+          )" class="w-full bg-purple-500 hover:bg-purple-600 text-white font-semibold py-3 px-6 rounded-lg transition-colors duration-300">
+            Sign In
+          </button>
+        </form>
+        <div class="mt-6 text-center">
+          <p class="text-sm text-gray-600">
+            Don't have an account? 
+            <button onclick="switchToRegister()" class="text-purple-600 hover:text-purple-700 font-semibold ml-1">Register now</button>
+          </p>
+        </div>
+      </div>
+
+
+      <!-- Admin Register Form -->
+      <div id="adminRegisterForm" class="hidden">
+        <form class="space-y-4" onsubmit="event.preventDefault();">
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-2">Full Name</label>
+            <input id="adminFullName" type="text" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent" placeholder="Enter your full name">
+          </div>
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-2">Email Address</label>
+            <input id="adminRegisterEmail" type="email" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent" placeholder="Enter your email">
+          </div>
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-2">Password</label>
+            <input id="adminRegisterPassword" type="password" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent" placeholder="Create a password">
+          </div>
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-2">Confirm Password</label>
+            <input id="adminConfirmPassword" type="password" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent" placeholder="Confirm your password">
+          </div>
+          <div class="flex items-center">
+            <input type="checkbox" class="rounded border-gray-300 text-purple-600 focus:ring-purple-500">
+            <span class="ml-2 text-sm text-gray-600">I agree to the Terms of Service and Privacy Policy</span>
+          </div>
+          <button type="button" onclick="
+            if (document.getElementById('adminRegisterPassword').value === document.getElementById('adminConfirmPassword').value) {
+              adminRegister(
+                document.getElementById('adminRegisterEmail').value,
+                document.getElementById('adminRegisterPassword').value,
+                document.getElementById('adminFullName').value
+              );
+            } else {
+              alert('Passwords do not match!');
+            }
+          " class="w-full bg-purple-500 hover:bg-purple-600 text-white font-semibold py-3 px-6 rounded-lg transition-colors duration-300">
+            Create Account
+          </button>
+          <button type="button" onclick="switchToLogin()" class="w-full bg-gray-300 hover:bg-gray-400 text-gray-800 font-semibold py-3 px-6 rounded-lg transition-colors duration-300 mt-4">
+            Back to Login
+          </button>
+        </form>
+        <div class="mt-6 text-center">
+          <p class="text-sm text-gray-600">
+            Already have an account? 
+            <button onclick="switchToLogin()" class="text-purple-600 hover:text-purple-700 font-semibold ml-1">Sign in</button>
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script type="module" src="./test.js"></script>
+  <script src="Home-Java.js"></script>
+</body>
+</html>
