@@ -107,140 +107,136 @@
       </div>
       <h2 class="text-2xl font-bold text-gray-800 mb-4">Successfully Signed In!</h2>
       <p class="text-gray-600 mb-6" id="userWelcome">Welcome to our platform!</p>
-      <button onclick="closeModal('successModal')" class="w-full bg-blue-500 hover:bg-blue-600 text-white font-semibold py-3 px-6 rounded-lg transition-colors duration-300">
+      <button onclick="closeModal('successModal'); window.location.href='dashboard.html'" 
+      class="w-full bg-blue-500 hover:bg-blue-600 text-white font-semibold py-3 px-6 rounded-lg transition-colors duration-300">
         Continue to Dashboard
       </button>
     </div>
   </div>
 
-  <!-- Admin Modal -->
-  <div id="adminModal" class="modal fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
-    <div class="bg-white rounded-2xl shadow-2xl max-w-md w-full p-8 relative">
-      <button onclick="closeModal('adminModal')" class="absolute top-4 right-4 text-gray-400 hover:text-gray-600">
-        <i class="fas fa-times text-2xl"></i>
-      </button>
-      <div class="text-center mb-6">
-        <div class="w-20 h-20 mx-auto mb-4 bg-purple-100 rounded-full flex items-center justify-center">
-          <i class="fas fa-crown text-purple-600 text-3xl"></i>
+    <!-- Admin Modal -->
+    <div id="adminModal" class="modal fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
+      <div class="bg-white rounded-2xl shadow-2xl max-w-md w-full p-8 relative text-center">
+        <!-- Close Button -->
+        <button onclick="closeModal('adminModal')" class="absolute top-4 right-4 text-gray-400 hover:text-gray-600">
+          <i class="fas fa-times text-2xl"></i>
+        </button>
+        <!-- Header -->
+        <div class="mb-6">
+          <div class="w-20 h-20 mx-auto mb-4 bg-purple-100 rounded-full flex items-center justify-center">
+            <i class="fas fa-crown text-purple-600 text-3xl"></i>
+          </div>
+          <h2 class="text-2xl font-bold text-gray-800 mb-2">Admin Access</h2>
+          <p class="text-gray-600">Sign in or create your admin account</p>
         </div>
-        <h2 class="text-2xl font-bold text-gray-800 mb-2">Admin Access</h2>
-        <p class="text-gray-600">Sign in to your admin account</p>
-      </div>
 
-      <!-- Admin Login Form -->
-      <div id="adminLoginForm">
-        <form class="space-y-4">
-          <div>
-            <label class="block text-sm font-medium text-gray-700 mb-2">Email Address</label>
-            <input type="email" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent" placeholder="Enter your email">
-          </div>
-          <div>
-            <label class="block text-sm font-medium text-gray-700 mb-2">Password</label>
-            <input type="password" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent" placeholder="Enter your password">
-          </div>
-          <div class="flex items-center justify-between">
-            <label class="flex items-center">
-              <input type="checkbox" class="rounded border-gray-300 text-purple-600 focus:ring-purple-500">
-              <span class="ml-2 text-sm text-gray-600">Remember me</span>
-            </label>
-            <a href="#" class="text-sm text-purple-600 hover:text-purple-700">Forgot password?</a>
-          </div>
-          <button type="button" class="w-full bg-purple-500 hover:bg-purple-600 text-white font-semibold py-3 px-6 rounded-lg transition-colors duration-300">
-            Sign In
-          </button>
-        </form>
-        <div class="mt-6 text-center">
-          <p class="text-sm text-gray-600">
-            Don't have an account? 
-            <button onclick="switchToRegister()" class="text-purple-600 hover:text-purple-700 font-semibold ml-1">Register now</button>
-          </p>
+    <!-- Admin Login Form -->
+    <div id="adminLoginForm">
+      <form class="space-y-4" onsubmit="event.preventDefault();">
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-2">Email Address</label>
+          <input id="adminLoginEmail" type="email" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent" placeholder="Enter your email">
         </div>
-      </div>
+        <div class="relative">
+          <label class="block text-sm font-medium text-gray-700 mb-2">Password</label>
+  
+            <!-- Input with extra padding on the right -->
+            <input id="adminLoginPassword" 
+                  type="password" 
+                  class="w-full px-4 py-3 pr-10 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent" 
+                  placeholder="Enter your password">
 
-      <!-- Admin Login Form -->
-      <div id="adminLoginForm">
-        <form class="space-y-4" onsubmit="event.preventDefault();">
-          <div>
-            <label class="block text-sm font-medium text-gray-700 mb-2">Email Address</label>
-            <input id="adminLoginEmail" type="email" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent" placeholder="Enter your email">
-          </div>
-          <div>
-            <label class="block text-sm font-medium text-gray-700 mb-2">Password</label>
-            <input id="adminLoginPassword" type="password" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent" placeholder="Enter your password">
-          </div>
-          <div class="flex items-center justify-between">
-            <label class="flex items-center">
-              <input type="checkbox" class="rounded border-gray-300 text-purple-600 focus:ring-purple-500">
-              <span class="ml-2 text-sm text-gray-600">Remember me</span>
-            </label>
-            <a href="#" class="text-sm text-purple-600 hover:text-purple-700">Forgot password?</a>
-          </div>
-          <button type="button" onclick="adminLogin(
-            document.getElementById('adminLoginEmail').value,
-            document.getElementById('adminLoginPassword').value
-          )" class="w-full bg-purple-500 hover:bg-purple-600 text-white font-semibold py-3 px-6 rounded-lg transition-colors duration-300">
-            Sign In
-          </button>
-        </form>
-        <div class="mt-6 text-center">
-          <p class="text-sm text-gray-600">
-            Don't have an account? 
-            <button onclick="switchToRegister()" class="text-purple-600 hover:text-purple-700 font-semibold ml-1">Register now</button>
-          </p>
+            <!-- Eye button inside the input box -->
+            <button type="button" 
+                    onclick="togglePassword('adminLoginPassword', this)" 
+                    class="absolute right-3 top-1/2 transform -translate-y-1/ text-gray-400 hover:text-gray-600">
+              <i class="fas fa-eye"></i>
+            </button>
         </div>
-      </div>
-
-
-      <!-- Admin Register Form -->
-      <div id="adminRegisterForm" class="hidden">
-        <form class="space-y-4" onsubmit="event.preventDefault();">
-          <div>
-            <label class="block text-sm font-medium text-gray-700 mb-2">Full Name</label>
-            <input id="adminFullName" type="text" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent" placeholder="Enter your full name">
-          </div>
-          <div>
-            <label class="block text-sm font-medium text-gray-700 mb-2">Email Address</label>
-            <input id="adminRegisterEmail" type="email" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent" placeholder="Enter your email">
-          </div>
-          <div>
-            <label class="block text-sm font-medium text-gray-700 mb-2">Password</label>
-            <input id="adminRegisterPassword" type="password" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent" placeholder="Create a password">
-          </div>
-          <div>
-            <label class="block text-sm font-medium text-gray-700 mb-2">Confirm Password</label>
-            <input id="adminConfirmPassword" type="password" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent" placeholder="Confirm your password">
-          </div>
-          <div class="flex items-center">
+        <div class="flex items-center justify-between">
+          <label class="flex items-center">
             <input type="checkbox" class="rounded border-gray-300 text-purple-600 focus:ring-purple-500">
-            <span class="ml-2 text-sm text-gray-600">I agree to the Terms of Service and Privacy Policy</span>
-          </div>
-          <button type="button" onclick="
-            if (document.getElementById('adminRegisterPassword').value === document.getElementById('adminConfirmPassword').value) {
-              adminRegister(
-                document.getElementById('adminRegisterEmail').value,
-                document.getElementById('adminRegisterPassword').value,
-                document.getElementById('adminFullName').value
-              );
-            } else {
-              alert('Passwords do not match!');
-            }
-          " class="w-full bg-purple-500 hover:bg-purple-600 text-white font-semibold py-3 px-6 rounded-lg transition-colors duration-300">
-            Create Account
-          </button>
-          <button type="button" onclick="switchToLogin()" class="w-full bg-gray-300 hover:bg-gray-400 text-gray-800 font-semibold py-3 px-6 rounded-lg transition-colors duration-300 mt-4">
-            Back to Login
-          </button>
-        </form>
-        <div class="mt-6 text-center">
-          <p class="text-sm text-gray-600">
-            Already have an account? 
-            <button onclick="switchToLogin()" class="text-purple-600 hover:text-purple-700 font-semibold ml-1">Sign in</button>
-          </p>
+            <span class="ml-2 text-sm text-gray-600">Remember me</span>
+          </label>
+          <a href="#" class="text-sm text-purple-600 hover:text-purple-700">Forgot password?</a>
         </div>
+        <button type="button" onclick="adminLogin(
+          document.getElementById('adminLoginEmail').value,
+          document.getElementById('adminLoginPassword').value
+        )" class="w-full bg-purple-500 hover:bg-purple-600 text-white font-semibold py-3 px-6 rounded-lg transition-colors duration-300">
+          Sign In
+        </button>
+      </form>
+      <div class="mt-6 text-center">
+        <p class="text-sm text-gray-600">
+          Don't have an account? 
+          <button type="button" onclick="switchToRegister()" class="text-purple-600 hover:text-purple-700 font-semibold ml-1">Register now</button>
+        </p>
+      </div>
+    </div>
+
+    <!-- Admin Register Form -->
+    <div id="adminRegisterForm" class="hidden">
+      <form class="space-y-4" onsubmit="event.preventDefault();">
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-2">Full Name</label>
+          <input id="adminFullName" type="text" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent" placeholder="Enter your full name">
+        </div>
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-2">Email Address</label>
+          <input id="adminRegisterEmail" type="email" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent" placeholder="Enter your email">
+        </div>
+        <div class="relative mb-4">
+          <label class="block text-sm font-medium text-gray-700 mb-2">Password</label>
+          <input id="adminRegisterPassword" 
+                type="password" 
+                class="w-full px-4 py-3 pr-10 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent" 
+                placeholder="Enter password">
+          <button type="button" 
+                  onclick="togglePassword('adminRegisterPassword', this)" 
+                  class="absolute right-3 top-1/2 transform -translate-y-1/5 text-gray-400 hover:text-gray-600">
+            <i class="fas fa-eye"></i>
+          </button>
+        </div>
+        <div class="relative mb-4">
+          <label class="block text-sm font-medium text-gray-700 mb-2">Confirm Password</label>
+          <input id="adminRegisterConfirmPassword" 
+                type="password" 
+                class="w-full px-4 py-3 pr-10 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent" 
+                placeholder="Confirm password">
+          <button type="button" 
+                  onclick="togglePassword('adminRegisterConfirmPassword', this)" 
+                  class="absolute right-3 top-1/2 transform -translate-y-1/5 text-gray-400 hover:text-gray-600">
+            <i class="fas fa-eye"></i>
+          </button>
+        </div>
+        <div class="flex items-center">
+          <input type="checkbox" class="rounded border-gray-300 text-purple-600 focus:ring-purple-500">
+          <span class="ml-2 text-sm text-gray-600">I agree to the Terms of Service and Privacy Policy</span>
+        </div>
+        <button type="button" onclick="
+          if (document.getElementById('adminRegisterPassword').value === document.getElementById('adminConfirmPassword').value) {
+            adminRegister(
+              document.getElementById('adminRegisterEmail').value,
+              document.getElementById('adminRegisterPassword').value,
+              document.getElementById('adminFullName').value
+            );
+          } else {
+            alert('Passwords do not match!');
+          }
+        " class="w-full bg-purple-500 hover:bg-purple-600 text-white font-semibold py-3 px-6 rounded-lg transition-colors duration-300">
+          Create Account
+        </button>
+      </form>
+      <div class="mt-6 text-center">
+        <p class="text-sm text-gray-600">
+          Already have an account? 
+          <button onclick="switchToLogin()" class="text-purple-600 hover:text-purple-700 font-semibold ml-1">Sign in</button>
+        </p>
       </div>
     </div>
   </div>
-
+</div>
   <script type="module" src="./test.js"></script>
   <script src="Home-Java.js"></script>
 </body>

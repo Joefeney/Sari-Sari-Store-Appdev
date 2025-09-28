@@ -27,8 +27,3 @@
   overflow-y: auto; /* Allow scrolling if content exceeds max height */
   padding: 20px; /* Ensure consistent padding */
 }
-
-/* Ensure the modal width is consistent */
-#adminModal {
-  max-width: 400px; /* Ensure the modal width is consistent */
-}

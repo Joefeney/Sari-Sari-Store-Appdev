@@ -30,6 +30,9 @@ window.handleGoogleSignIn = async () => {
     // Show success modal
     document.getElementById("userWelcome").innerText = `Welcome, ${user.displayName || user.email}!`;
     openModal("successModal");
+
+    window.location.href = "dashboard.html";
+
   } catch (error) {
     console.error("Google sign-in error:", error);
     alert(error.message);
@@ -52,6 +55,7 @@ window.adminRegister = async (email, password, fullName) => {
     });
 
     alert("Admin account created!");
+    window.location.href = "admin-dashboard.html";  // 🔹 Redirect after register
   } catch (error) {
     alert(error.message);
   }
@@ -60,7 +64,9 @@ window.adminRegister = async (email, password, fullName) => {
 window.adminLogin = async (email, password) => {
   try {
     await signInWithEmailAndPassword(auth, email, password);
-    alert("Admin logged in!");
+
+    // 🔹 Redirect after login
+    window.location.href = "admin-dashboard.html";
   } catch (error) {
     alert(error.message);
   }
@@ -69,8 +75,8 @@ window.adminLogin = async (email, password) => {
 window.adminLogout = async () => {
   await signOut(auth);
   alert("Logged out!");
+  window.location.href = "index.html"; // go back to homepage
 };
-
 // ============================
 // TRACK LOGIN STATE
 // ============================
