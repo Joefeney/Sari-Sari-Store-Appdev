@@ -27,7 +27,7 @@ function switchToLogin() {
 }
 
 // Google Sign-In Handler
-function handleGoogleSignIn(response) {
+function handleGoogleSignInJWT(response) {
   console.log('Google Sign-In successful:', response);
 
   const decodedToken = parseJwt(response.credential);
@@ -37,7 +37,6 @@ function handleGoogleSignIn(response) {
   closeModal('customerModal');
   document.getElementById('successModal').classList.add('active');
 }
-
 // Helper function to parse JWT token
 function parseJwt(token) {
   try {
@@ -80,17 +79,6 @@ document.addEventListener('keydown', function(event) {
   if (event.key === 'Escape') {
     ['customerModal', 'adminModal', 'successModal'].forEach(closeModal);
   }
-});
-
-// Setup instructions
-document.addEventListener('DOMContentLoaded', function() {
-  console.log('Setup Instructions:');
-  console.log('1. Go to Google Cloud Console: https://console.cloud.google.com/');
-  console.log('2. Create a new project or select existing one');
-  console.log('3. Enable Google Identity Services API');
-  console.log('4. Create OAuth 2.0 credentials');
-  console.log('5. Replace "YOUR_GOOGLE_CLIENT_ID_HERE" with your actual client ID');
-  console.log('6. Add your domain to authorized JavaScript origins');
 });
 
 // Toggle password visibility

@@ -1,11 +1,7 @@
-// Import the functions you need
-import { getAuth, connectAuthEmulator } from "firebase/auth";
-import { getFirestore, connectFirestoreEmulator } from "firebase/firestore";
-import { initializeApp } from "firebase/app";
-import { getAuth } from "firebase/auth";
-import { getFirestore } from "firebase/firestore";
+import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-app.js";
+import { getAuth, connectAuthEmulator } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-auth.js";
+import { getFirestore, connectFirestoreEmulator } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-firestore.js";
 
-// Your Firebase configuration (copied from Console)
 const firebaseConfig = {
   apiKey: "AIzaSyD5T9h60ihJSYhzu4Mu8LJgm8EKprjdY50",
   authDomain: "sari-sari-proj.firebaseapp.com",
@@ -16,15 +12,12 @@ const firebaseConfig = {
   measurementId: "G-EB5T3JPDS2"
 };
 
-// Initialize Firebase
 const app = initializeApp(firebaseConfig);
+export const auth = getAuth(app);
+export const db = getFirestore(app);
 
-// Set up the services you’ll use
-export const auth = getAuth(app);      // for login/signup
-export const db = getFirestore(app);  // for database
-
-// 🔹 Connect to emulators (only when running locally)
-if (location.hostname === "localhost") {
-  connectAuthEmulator(auth, "http://localhost:9099");
-  connectFirestoreEmulator(db, "localhost", 8080);
+// Connect emulators only if running locally
+if (location.hostname === "localhost" || location.hostname === "127.0.0.1") {
+  connectAuthEmulator(auth, "http://127.0.0.1:9099");
+  connectFirestoreEmulator(db, "127.0.0.1", 8080);
 }

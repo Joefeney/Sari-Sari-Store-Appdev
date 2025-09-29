@@ -1,4 +1,3 @@
-// test.js
 import { auth, db } from "./firebase.js";
 import { 
   GoogleAuthProvider, 
@@ -6,16 +5,24 @@ import {
   onAuthStateChanged, 
   createUserWithEmailAndPassword, 
   signInWithEmailAndPassword, 
-  signOut 
-} from "firebase/auth";
-import { doc, setDoc } from "firebase/firestore";
+  signOut,
+  connectAuthEmulator
+} from "https://www.gstatic.com/firebasejs/11.0.1/firebase-auth.js";
+import { doc, setDoc } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-firestore.js";
+
+// ============================
+// CONNECT TO AUTH EMULATOR (LOCAL ONLY)
+// ============================
+if (window.location.hostname === "localhost") {
+  connectAuthEmulator(auth, "http://127.0.0.1:9099");
+}
 
 // ============================
 // CUSTOMER: GOOGLE SIGN-IN
 // ============================
 const googleProvider = new GoogleAuthProvider();
 
-window.handleGoogleSignIn = async () => {
+async function handleGoogleSignIn() {
   try {
     const result = await signInWithPopup(auth, googleProvider);
     const user = result.user;
@@ -37,12 +44,12 @@ window.handleGoogleSignIn = async () => {
     console.error("Google sign-in error:", error);
     alert(error.message);
   }
-};
+}
 
 // ============================
 // ADMIN AUTH (Email/Password)
 // ============================
-window.adminRegister = async (email, password, fullName) => {
+async function adminRegister(email, password, fullName, storeName, storeAddress, phoneNumber) {
   try {
     const userCredential = await createUserWithEmailAndPassword(auth, email, password);
     const user = userCredential.user;
@@ -50,18 +57,61 @@ window.adminRegister = async (email, password, fullName) => {
     await setDoc(doc(db, "admins", user.uid), {
       fullName,
       email: user.email,
+      storeName,
+      storeAddress,
+      phoneNumber,
       role: "admin",
       createdAt: new Date()
     });
 
-    alert("Admin account created!");
-    window.location.href = "admin-dashboard.html";  // 🔹 Redirect after register
-  } catch (error) {
-    alert(error.message);
-  }
-};
+    // ✅ Success flow
+    alert("✅ Admin account created successfully!");
 
-window.adminLogin = async (email, password) => {
+    // 🔹 Close register modal
+    closeModal("adminRegisterForm");
+
+    // 🔹 Open login modal
+    openModal("adminLoginForm");
+
+  } catch (error) {
+    alert("❌ " + error.message);
+  }
+}
+
+function handleAdminRegister() {
+  alert("🔔 handleAdminRegister clicked!");
+  
+  const fullName = document.getElementById("adminFullName").value.trim();
+  const email = document.getElementById("adminRegisterEmail").value.trim();
+  const password = document.getElementById("adminRegisterPassword").value.trim();
+  const confirmPassword = document.getElementById("adminRegisterConfirmPassword").value.trim();
+  const storeName = document.getElementById("adminStoreName").value.trim();
+  const storeAddress = document.getElementById("adminStoreAddress").value.trim();
+  const phoneNumber = document.getElementById("adminPhone").value.trim();
+
+  // ✅ Validation
+  if (!fullName || !email || !password || !confirmPassword || !storeName || !storeAddress || !phoneNumber) {
+    alert("⚠️ Please fill up all details.");
+    return;
+  }
+
+  if (password !== confirmPassword) {
+    alert("⚠️ Passwords do not match.");
+    return;
+  }
+
+  if (password.length < 6) {
+    alert("⚠️ Password must be at least 6 characters.");
+    return;
+  }
+
+  // ✅ Call your Firebase function
+  adminRegister(email, password, fullName, storeName, storeAddress, phoneNumber);
+
+  console.log("🚀 handleAdminRegister triggered");
+}
+
+async function adminLogin(email, password) {
   try {
     await signInWithEmailAndPassword(auth, email, password);
 
@@ -70,13 +120,14 @@ window.adminLogin = async (email, password) => {
   } catch (error) {
     alert(error.message);
   }
-};
+}
 
-window.adminLogout = async () => {
+async function adminLogout() {
   await signOut(auth);
   alert("Logged out!");
   window.location.href = "index.html"; // go back to homepage
-};
+}
+
 // ============================
 // TRACK LOGIN STATE
 // ============================
@@ -93,7 +144,7 @@ onAuthStateChanged(auth, (user) => {
 // ============================
 async function addTestProduct() {
   try {
-    const docRef = await setDoc(doc(db, "products", "sampleProduct"), {
+    await setDoc(doc(db, "products", "sampleProduct"), {
       name: "Test Product",
       price: 99,
       stock: 10
@@ -106,3 +157,10 @@ async function addTestProduct() {
 // Uncomment if you want to test:
 // addTestProduct();
 
+// ============================
+// MAKE FUNCTIONS AVAILABLE TO HTML
+// ============================
+window.handleAdminRegister = handleAdminRegister;
+window.adminLogin = adminLogin;
+window.adminLogout = adminLogout;
+window.handleGoogleSignIn = handleGoogleSignIn;
